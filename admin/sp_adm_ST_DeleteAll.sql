@@ -1,0 +1,13 @@
+ALTER PROCEDURE sp_adm_ST_DeleteAll
+AS
+BEGIN
+
+    declare @error INTEGER = -1
+
+    DELETE FROM SERVICE_MECHANICS
+    DELETE FROM SERVICE_TICKETS
+
+    return @error
+
+END
+GO

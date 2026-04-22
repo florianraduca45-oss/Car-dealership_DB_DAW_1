@@ -1,0 +1,56 @@
+
+*******************************************************************************
+* Pasos para subir el proyecto a un repositorio en GitHub:                    *
+*                                                                             *
+*******************************************************************************
+* Paso 1:                                                                     *
+*******************************************************************************
+* - Crear un repositorio en GitHub. Preferiblemente marcar la casilla         *   
+*   "Add a README file".                                                      *
+*                                                                             *
+*******************************************************************************
+* Paso 2:                                                                     *
+*******************************************************************************
+* - En Visual Studio Code abrimos nuestro proyecto, una carpeta con los       *
+*   archivos que tengamos.                                                    *
+* - En la barra de tareas abrimos una terminal o hacemos Ctr+Mayús+ñ.         *
+* - En la terminal, escribimos el comando "git init", esto abre un            *
+*   repositorio local en el pc.                                               *
+*                                                                             *
+*******************************************************************************
+* Paso 3:                                                                     *
+*******************************************************************************
+* - En la pagina de GitHub entramos en nuestro repositorio y en la pestaña    *
+*   "<> Code" encontramos la URL del mismo. La copiamos.                      *
+* - En la terminal escribimos "git remote add origin" y a continuación        *
+*   pegamos la URL del repositorio. Con esto vinculamos el repositorio local  *
+*   con el repositorio remoto.                                                *
+*                                                                             *
+*******************************************************************************
+* Paso 4:                                                                     *
+*******************************************************************************
+* - Ejecutamos el comando "git status" con esto vemos si Git esta fijandose   *
+*   (Track) en los cambios que pueden haber en un archivo.                    *
+* - Para que Git los comience a 'trackear' tenemos que hacer un "commit".     *
+*   Ejecutamos en la terminal "git add" seguido del nombre del archivo para   *
+*   un archivo o "git add ." para añadir todos los archivos que no estan      *
+*   siendo 'trackeados'.                                                      *
+* - Volvemos a ejecutar "git status" para comprobar.                          *             
+*                                                                             *
+*******************************************************************************
+* Paso 5:                                                                     *      
+*******************************************************************************
+* - Para hacer el 'commit' ejecutamos "git commit -m (mensaje obligatorio)"   *
+*   Es importante que escribamos un mensaje descriptivo para que, en el caso  *
+*   de querer volver atras, tener identificado el estado del proyecto en el   *
+*   timeline.                                                                 *
+*                                                                             *        
+*******************************************************************************
+* Paso 6:                                                                     *   
+*******************************************************************************
+* - Ejecutamos el comando "git push" en la terminal. Si no sale un error por  *
+*   ser la primera vez que subimos un repositorio a una rama, copiamos el     *
+*   comando que nos da Git, con esto adjudicamos la rama maestra y se subira  *
+*   nuestro cambio a nuestro repositorio en GitHub.                           *
+*                                                                             *  
+*******************************************************************************
