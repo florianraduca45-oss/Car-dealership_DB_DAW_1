@@ -17,6 +17,8 @@
 * - En la terminal, escribimos el comando "git init", esto abre un            *
 *   repositorio local en el pc.                                               *
 *                                                                             *
+*       git init                                                              *
+*                                                                             *
 *******************************************************************************
 * Paso 3:                                                                     *
 *******************************************************************************
@@ -25,6 +27,8 @@
 * - En la terminal escribimos "git remote add origin" y a continuación        *
 *   pegamos la URL del repositorio. Con esto vinculamos el repositorio local  *
 *   con el repositorio remoto.                                                *
+*                                                                             *
+*       git remote add origin (URL)                                           *
 *                                                                             *
 *******************************************************************************
 * Paso 4:                                                                     *
@@ -37,6 +41,9 @@
 *   siendo 'trackeados'.                                                      *
 * - Volvemos a ejecutar "git status" para comprobar.                          *             
 *                                                                             *
+*       git status                                                            *
+*       git add (nombre del archivo) / git add .                              *
+*                                                                             *
 *******************************************************************************
 * Paso 5:                                                                     *      
 *******************************************************************************
@@ -45,6 +52,8 @@
 *   de querer volver atras, tener identificado el estado del proyecto en el   *
 *   timeline.                                                                 *
 *                                                                             *        
+*       git commit -m ("mensaje obligatorio")                                 *        
+*                                                                             *        
 *******************************************************************************
 * Paso 6:                                                                     *   
 *******************************************************************************
@@ -52,5 +61,7 @@
 *   ser la primera vez que subimos un repositorio a una rama, copiamos el     *
 *   comando que nos da Git, con esto adjudicamos la rama maestra y se subira  *
 *   nuestro cambio a nuestro repositorio en GitHub.                           *
+*                                                                             *  
+*       git push --set-upstream origin master                                 *  
 *                                                                             *  
 *******************************************************************************
