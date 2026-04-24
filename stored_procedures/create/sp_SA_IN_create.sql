@@ -37,7 +37,7 @@ BEGIN
 
 -- @car_id NVARCHAR(25)
 -- @customer_id NVARCHAR(25)
--- @salesperson_id NVARCHAR(25)
+-- @salesperson_id NVARCHAR(25).
 
 /*
    declare @error int = -1
