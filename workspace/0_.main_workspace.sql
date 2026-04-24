@@ -45,18 +45,19 @@ exec @error = sp_SM_Create 5, 4, 'mc04'
 /* ST 6*/
 exec @error = sp_ST_Create 'car06', 'c06'
 
-
--- exec sp_ST_View 1
--- exec sp_ST_View 2
--- exec sp_ST_View 3
--- exec sp_ST_View 4
--- exec sp_ST_View 5
--- exec sp_ST_View 6
-
-
-print @error
+/*
+   exec sp_ST_view 1
+   exec sp_ST_view 2
+   exec sp_ST_view 3
+   exec sp_ST_view 4
+   exec sp_ST_view 5
+   exec sp_ST_view 6
+*/
 
 /*
-   select * from v_service_tickets  (Tengo que crear la vista de cada ticket)
+   print @error
    exec sp_adm_InsertTestData (Crear una Procedure para insertar los datos de test)
 */
+
+
+SELECT * FROM SERVICE_TICKETS;

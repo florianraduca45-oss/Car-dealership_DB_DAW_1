@@ -1,4 +1,4 @@
-CREATE PROCEDURE sp_SA_IN_create
+ALTER PROCEDURE sp_SA_IN_create
     @car_id NVARCHAR(25),
     @customer_id NVARCHAR(25),
     @salesperson_id NVARCHAR(25)
@@ -7,14 +7,21 @@ as
 BEGIN
 
     declare @error int = -1
+    declare @date_returned DATETIME
 
     declare @invoice_id INTEGER
 
-    -- Seleccionamos el ultimo invoice_id y le sumamos + 1 para generar el nuevo invoice_id
-    SELECT TOP 1
-        @invoice_id = invoice_id + 1
+    SELECT 
+        date_returned = @date_returned
+    FROM SERVICE_TICKETS
+    WHERE @car_id = car_id
+
+    if @date_returned = NULL return @error
+
+    -- Seleccionamos el ultimo invoice_id y le sumamos + 1 para generar el nuevo invoice_id, si el registro es NULL crea el invoice_id
+    SELECT 
+        @invoice_id = ISNULL(MAX(invoice_id), 0) + 1
     FROM SALES_INVOICES
-    ORDER BY invoice_id DESC
 
     INSERT INTO SALES_INVOICES
         (invoice_id, invoice_number, date, car_id, customer_id, salesperson_id)
@@ -42,9 +49,3 @@ BEGIN
 */
 end
 GO
-
-
-INSERT INTO [dbo].[SALES_INVOICES]
-    ([invoice_id], [invoice_number], [date], [car_id], [customer_id], [salesperson_id])
-VALUES
-    (1, N'IN-1', N'2026-03-29 00:00:00', N'CAR03', N'C01', N'SP5')
