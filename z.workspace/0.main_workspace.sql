@@ -56,8 +56,5 @@ exec @error = sp_ST_Create 'car06', 'c06'
 
 /*
    print @error
-   exec sp_adm_InsertTestData (Crear una Procedure para insertar los datos de test)
+   exec sp_adm_InsertTestData (Crear una Procedure para insertar los datos de test del Aureliano)
 */
-
-
-SELECT * FROM SERVICE_TICKETS;

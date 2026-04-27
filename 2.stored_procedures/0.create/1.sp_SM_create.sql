@@ -57,17 +57,11 @@ BEGIN
 end
 GO
 
--- INSERT INTO [dbo].[SERVICE_MECHANICS]
---     ([service_mechanic_id], [service_ticket_id], [service_id], [mechanic_id], [hours], [comment], [rate])
--- VALUES
---     (1, 1, 1, N'MC01', CAST(2 AS DECIMAL(5, 2)), N'hola', CAST(100 AS DECIMAL(10, 2)))
-
-
-
-
+/*
 UPDATE SERVICE_MECHANICS
-SET rate = rate + 10
+SET rate = 10
 
+SELECT * FROM SERVICE_MECHANICS;
 
 
 SELECT
@@ -88,4 +82,4 @@ GO
 
 
 SELECT * FROM v_tickets_cost;
-
+*/
