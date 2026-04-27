@@ -65,3 +65,8 @@
 *       git push --set-upstream origin master                                 *  
 *                                                                             *  
 *******************************************************************************
+
+
+Cambiar a otra rama:
+- git switch [nombre de la rama]
+
