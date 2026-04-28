@@ -130,40 +130,122 @@ ORDER BY Total_Entradas DESC;
 
 -- ********************************************************************************************************************************************************************
 /*
-Bloque B: Costes, Piezas y Facturación
-Coste total de piezas por ticket: Muestra todos los tickets y la suma del coste total en piezas (number_used * price). Si un ticket no usó piezas, debe mostrar 0.00 usando ISNULL().
+-- Bloque B: Costes, Piezas y Facturación
+1. Coste total de piezas por ticket: Muestra todos los tickets y la suma del coste total en piezas (number_used * price). Si un ticket no usó piezas, debe mostrar 0.00 usando ISNULL().
+*/
 
-Ingresos por mano de obra: Calcula el ingreso generado por mano de obra por cada ticket (multiplicando hours por rate en la tabla SERVICE_MECHANICS).
+SELECT
+    S.service_ticket_id,
+    ISNULL(SUM(P.price), 0.00) AS precio_total_piezas
+FROM SERVICE_TICKETS S
+LEFT JOIN PARTS_USED P
+    ON S.service_ticket_id = P.service_ticket_id
+GROUP BY S.service_ticket_id
 
-Factura global: Crea una consulta que muestre en una sola fila por ticket cerrado: El número de ticket, el costo total de piezas y el costo total de mano de obra. (Requiere subconsultas o sumar tras agrupar).
+/*
+2. Ingresos por mano de obra: Calcula el ingreso generado por mano de obra por cada ticket (multiplicando hours por rate en la tabla SERVICE_MECHANICS).
+*/
 
-Filtro de alto valor: Muestra los IDs de los tickets cuyo gasto total en piezas sea estrictamente mayor al promedio (AVG()) de gasto en piezas de todo el taller.
+SELECT 
+    service_ticket_id,
+    SUM(hours*rate) AS total_mano_obra
+FROM SERVICE_MECHANICS
+GROUP BY service_ticket_id
 
-Inventario inactivo: Encuentra las piezas (tabla PARTS) que nunca se han utilizado en ningún ticket (Anti-Join).
+/*
+3. Factura global: Crea una consulta que muestre en una sola fila por ticket cerrado: El número de ticket, el costo total de piezas y el costo total de mano de obra. (Requiere subconsultas o sumar tras agrupar).
+*/
 
+SELECT
+    S.service_ticket_id,
+    S.service_ticket_number,
+    SUM(SM.hours*SM.rate) AS total_mano_obra,  
+    SUM(P.price) AS precio_total_piezas
+FROM SERVICE_TICKETS S
+LEFT JOIN SERVICE_MECHANICS SM
+    ON S.service_ticket_id = SM.service_ticket_id
+LEFT JOIN PARTS_USED P
+    ON S.service_ticket_id = P.service_ticket_id
+WHERE S.date_returned IS NOT NULL
+GROUP BY 
+    S.service_ticket_id,
+    S.service_ticket_number
+
+/*
+4. Filtro de alto valor: Muestra los IDs de los tickets cuyo gasto total en piezas sea estrictamente mayor al promedio (AVG()) de gasto en piezas de todo el taller.
+*/
+
+SELECT
+    service_ticket_id,
+    SUM(number_used*price) AS precio_total_parts
+FROM PARTS_USED
+GROUP BY service_ticket_id
+HAVING SUM(number_used*price) > (
+    SELECT AVG(total_por_ticket)
+    FROM (
+        SELECT SUM(number_used*price) AS total_por_ticket
+        FROM PARTS_USED
+        GROUP BY service_ticket_id
+    ) t
+);
+
+/*
+5. Inventario inactivo: Encuentra las piezas (tabla PARTS) que nunca se han utilizado en ningún ticket (Anti-Join).
+*/
+
+SELECT 
+    parts_id,
+    part_number
+FROM PARTS
 
 -- ********************************************************************************************************************************************************************
-Bloque C: Productividad de los Mecánicos
-Horas trabajadas: Muestra el nombre y apellido de cada mecánico y el total de horas que han facturado. Los mecánicos que no han trabajado deben mostrar 0.
+/*
+-- Bloque C: Productividad de los Mecánicos
+1. Horas trabajadas: Muestra el nombre y apellido de cada mecánico y el total de horas que han facturado. Los mecánicos que no han trabajado deben mostrar 0.
+*/
 
-Mecánicos sin trabajo: Muestra únicamente a los mecánicos registrados en la base de datos que no tienen asignado ningún servicio en SERVICE_MECHANICS.
 
-Trabajo en equipo: Muestra los service_ticket_number que han requerido la intervención de más de un mecánico diferente (COUNT con HAVING).
+/*
+2. Mecánicos sin trabajo: Muestra únicamente a los mecánicos registrados en la base de datos que no tienen asignado ningún servicio en SERVICE_MECHANICS.
+*/
 
-El más rápido: ¿Qué mecánico (mechanic_id) ha registrado el servicio con la menor cantidad de horas en un solo registro? (Usa subconsulta o TOP 1).
 
-Productividad por servicio: Muestra el nombre del servicio (service_name de SERVICES) y la cantidad de horas totales que todos los mecánicos han invertido en él históricamente.
+/*
+3. Trabajo en equipo: Muestra los service_ticket_number que han requerido la intervención de más de un mecánico diferente (COUNT con HAVING).
+*/
 
+
+/*
+4. El más rápido: ¿Qué mecánico (mechanic_id) ha registrado el servicio con la menor cantidad de horas en un solo registro? (Usa subconsulta o TOP 1).
+*/
+
+
+/*
+5. Productividad por servicio: Muestra el nombre del servicio (service_name de SERVICES) y la cantidad de horas totales que todos los mecánicos han invertido en él históricamente.
+*/
 
 -- ********************************************************************************************************************************************************************
-Bloque D: Clientes, Coches y Formateo (Cadenas)
-Historial de clientes: Muestra el nombre completo del cliente (CONCAT(first_name, ' ', last_name)) y cuántos tickets ha abierto en el taller.
+/*
+-- Bloque D: Clientes, Coches y Formateo (Cadenas)
+1. Historial de clientes: Muestra el nombre completo del cliente (CONCAT(first_name, ' ', last_name)) y cuántos tickets ha abierto en el taller.
+*/
 
-Coches conflictivos: Muestra la marca (make) y el modelo (model) de los coches que han entrado al taller más de una vez.
 
-Reporte estandarizado: Genera una sola columna de texto que diga exactamente: "El coche [MARCA EN MAYÚSCULAS] del cliente [Apellido] ingresó por un problema de: [comentarios]". (Usa UPPER() y CONCAT()).
+/*
+2. Coches conflictivos: Muestra la marca (make) y el modelo (model) de los coches que han entrado al taller más de una vez.
+*/
 
-El coche que más gastó: Muestra la matrícula (car_id) del coche que ha generado el ticket con el costo de piezas más alto de la base de datos (Usa MAX en una subconsulta).
 
-Auditoría de tickets: Muestra los tickets que han sido recibidos, pero que no tienen ningún servicio asignado ni piezas consumidas (Tu reporte definitivo de tareas pendientes).
+/*
+3. Reporte estandarizado: Genera una sola columna de texto que diga exactamente: "El coche [MARCA EN MAYÚSCULAS] del cliente [Apellido] ingresó por un problema de: [comentarios]". (Usa UPPER() y CONCAT()).
+*/
+
+
+/*
+4. El coche que más gastó: Muestra la matrícula (car_id) del coche que ha generado el ticket con el costo de piezas más alto de la base de datos (Usa MAX en una subconsulta).
+*/
+
+
+/*
+5. Auditoría de tickets: Muestra los tickets que han sido recibidos, pero que no tienen ningún servicio asignado ni piezas consumidas (Tu reporte definitivo de tareas pendientes).
 */
